@@ -10,6 +10,6 @@ import java.util.Date;
 public class DailyTaskResponse {
     private int task_sno;
     private String task_subject;
-    private Date task_time;
+    private String task_time;
     private String task_remarks;
 }

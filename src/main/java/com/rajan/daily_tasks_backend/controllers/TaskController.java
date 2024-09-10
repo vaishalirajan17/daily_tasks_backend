@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,8 +19,9 @@ public class TaskController {
     TaskService taskService;
 
     @GetMapping("/tasks")
-    public List<DailyTaskEntity> getDailyTasks() {
-        return taskService.getTasks();
+    public List<DailyTaskResponse> getDailyTasks(@RequestParam(name="task_date_num") int task_date_num) {
+        System.out.println(task_date_num);
+        return taskService.getTasks(task_date_num);
     }
 
     @PostMapping("/create")
@@ -27,5 +29,18 @@ public class TaskController {
         System.out.println(dailyTaskRequest.toString());
         taskService.createTasks(dailyTaskRequest);
     }
+
+    @GetMapping("/edit-tasks")
+    public List<DailyTaskResponse> getTasksEdit(@RequestParam(name="task_date")String gvnDate) {
+        System.out.println(gvnDate);
+        return taskService.getTasksEdit(gvnDate);
+    }
+
+    @GetMapping("/check")
+    public String check(@RequestParam(name="task_date")String gvnDate){
+        System.out.println(gvnDate);
+        return "hi";
+    }
+
 
 }
