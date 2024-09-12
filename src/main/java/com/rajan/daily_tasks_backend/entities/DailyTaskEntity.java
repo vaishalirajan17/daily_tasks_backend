@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,7 @@ public class DailyTaskEntity {
     private String task_subject;
 
     @Column(name="task_time")
-    private Date task_time;
+    private Timestamp task_time;
 
     @Column(name="task_remarks")
     private String task_remarks;

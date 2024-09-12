@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<DailyTaskEntity,Long> {
 
-    @Query(value="select task_id,task_subject, task_time, task_remarks from daily_tasks where CONVERT(date,task_time)=CONVERT(date,GETDATE())", nativeQuery = true)
+    @Query(value="select task_id,task_subject, task_time, task_remarks from daily_tasks where task_time >= (select getdate()) order by task_time asc", nativeQuery = true)
     List<DailyTaskEntity> findTasks();
 
     @Query(value="select task_id,task_subject, task_time, task_remarks from daily_tasks where CONVERT(date,task_time)=CONVERT(date,GETDATE()-1)", nativeQuery = true)

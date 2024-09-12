@@ -7,6 +7,7 @@ import com.rajan.daily_tasks_backend.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,28 +21,17 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-    public List<DailyTaskResponse> getTasks(int tasks_date_num) {
+    public List<DailyTaskResponse> getTasks() {
         List<DailyTaskEntity> dailyTaskEntities = new ArrayList<>();
-        if(tasks_date_num == 0) {
-            dailyTaskEntities=taskRepository.findTasks();
-        } else if (tasks_date_num == -1) {
-            dailyTaskEntities=taskRepository.findTasksPrev();
-        } else if (tasks_date_num == 1) {
-            dailyTaskEntities=taskRepository.findTasksNext();
-        }
+        dailyTaskEntities = taskRepository.findTasks();
         List<DailyTaskResponse> dailyTaskResponses = new ArrayList<>();
         for (DailyTaskEntity dailyTaskEntity : dailyTaskEntities) {
 
             DailyTaskResponse dailyTaskResponse = new DailyTaskResponse();
             dailyTaskResponse.setTask_sno((int) dailyTaskEntity.getTask_id());
             dailyTaskResponse.setTask_subject(dailyTaskEntity.getTask_subject());
+            dailyTaskResponse.setTask_time(String.valueOf(dailyTaskEntity.getTask_time()));
             dailyTaskResponse.setTask_remarks(dailyTaskEntity.getTask_remarks());
-
-            SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
-            String time = localDateFormat.format(dailyTaskEntity.getTask_time());
-
-            dailyTaskResponse.setTask_time(time);
-            System.out.println(dailyTaskResponse);
 
             dailyTaskResponses.add(dailyTaskResponse);
         }
@@ -55,9 +45,15 @@ public class TaskService {
 
         dailyTaskEntity.setTask_subject(dailyTaskRequest.getTask_subject());
         dailyTaskEntity.setTask_remarks(dailyTaskRequest.getTask_remarks());
-        dailyTaskEntity.setTask_time(dailyTaskRequest.getTask_time());
+        dailyTaskEntity.setTask_time(convert(dailyTaskRequest.getTask_time()));
 
         taskRepository.save(dailyTaskEntity);
+    }
+
+    public java.sql.Timestamp convert(String ts) {
+        ts = ts.replace("T", " ").concat(":00");
+        System.out.println(ts);
+        return Timestamp.valueOf(ts);
     }
 
     public List<DailyTaskResponse> getTasksEdit(String gvnDate) {

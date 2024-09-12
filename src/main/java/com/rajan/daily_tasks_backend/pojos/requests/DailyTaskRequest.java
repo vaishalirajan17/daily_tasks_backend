@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import java.util.Date;
 public class DailyTaskRequest {
 
     private String task_subject;
-    private Date task_time;
+    private String task_time;
     private String task_remarks;
 
 }

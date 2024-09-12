@@ -22,9 +22,8 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<DailyTaskResponse> getDailyTasks(@RequestParam(name="task_date_num") int taskDateNum) {
-        System.out.println(taskDateNum);
-        return taskService.getTasks(taskDateNum);
+    public List<DailyTaskResponse> getDailyTasks() {
+        return taskService.getTasks();
     }
 
     @PostMapping("/create")
