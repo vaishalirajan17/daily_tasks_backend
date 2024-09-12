@@ -15,13 +15,16 @@ import java.util.List;
 @CrossOrigin("*")
 public class TaskController {
 
-    @Autowired
     TaskService taskService;
 
+    TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
     @GetMapping("/tasks")
-    public List<DailyTaskResponse> getDailyTasks(@RequestParam(name="task_date_num") int task_date_num) {
-        System.out.println(task_date_num);
-        return taskService.getTasks(task_date_num);
+    public List<DailyTaskResponse> getDailyTasks(@RequestParam(name="task_date_num") int taskDateNum) {
+        System.out.println(taskDateNum);
+        return taskService.getTasks(taskDateNum);
     }
 
     @PostMapping("/create")
@@ -40,6 +43,12 @@ public class TaskController {
     public String check(@RequestParam(name="task_date")String gvnDate){
         System.out.println(gvnDate);
         return "hi";
+    }
+
+    @GetMapping("/delete")
+    public String deleteTask(@RequestParam(name="task_sno") Long taskNo){
+        System.out.println("task no is: "+taskNo);
+        return taskService.deleteTask(taskNo);
     }
 
 

@@ -30,15 +30,15 @@ public class TaskService {
             dailyTaskEntities=taskRepository.findTasksNext();
         }
         List<DailyTaskResponse> dailyTaskResponses = new ArrayList<>();
-        for(int i = 0 ; i < dailyTaskEntities.size();i++) {
+        for (DailyTaskEntity dailyTaskEntity : dailyTaskEntities) {
 
             DailyTaskResponse dailyTaskResponse = new DailyTaskResponse();
-            dailyTaskResponse.setTask_sno((int) dailyTaskEntities.get(i).getTask_id());
-            dailyTaskResponse.setTask_subject(dailyTaskEntities.get(i).getTask_subject());
-            dailyTaskResponse.setTask_remarks(dailyTaskEntities.get(i).getTask_remarks());
+            dailyTaskResponse.setTask_sno((int) dailyTaskEntity.getTask_id());
+            dailyTaskResponse.setTask_subject(dailyTaskEntity.getTask_subject());
+            dailyTaskResponse.setTask_remarks(dailyTaskEntity.getTask_remarks());
 
             SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
-            String time = localDateFormat.format(dailyTaskEntities.get(i).getTask_time());
+            String time = localDateFormat.format(dailyTaskEntity.getTask_time());
 
             dailyTaskResponse.setTask_time(time);
             System.out.println(dailyTaskResponse);
@@ -91,5 +91,16 @@ public class TaskService {
 
         System.out.println(dailyTaskResponses.size());
         return dailyTaskResponses;
+    }
+
+    public String deleteTask(Long task_id) {
+
+        try {
+            taskRepository.deleteById(task_id);
+        }
+        catch (Exception e) {
+            return "failed";
+        }
+     return "deleted";
     }
 }
